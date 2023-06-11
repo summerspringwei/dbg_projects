@@ -23,11 +23,11 @@ we can find the ID `0` and `2` that use float32 only use CUDA core(As there is n
 ### For version 2
 For ID `19`, there are `MMA` instructions like `HMMA.16816.F32 R4, R132, R136, R4`,
 which indicates this kernel uses tensor core for computation.
-For ID `22`, there are only `FMMA` instruction like `FFMA R46, R89, R107, R46`,
+For ID `22`, there are only `FFMA` instruction like `FFMA R46, R89, R107, R46`,
 which indicates this kernel only uses cuda core.
 
 ### For version 3
-For ID `99` and `101`, there are `MMA` instrcution like `HMMA.1688.F32.TF32 R4, R132, R136, R4`, which indicates both of them use tensor core.
+For ID `99` and `101`, there are `MMA` instrcution like `HMMA.1688.F32.TF32 R4, R132, R136, R4`, which indicates both of them use tensor core with TensorFloat32 as input and FP32 and output.
 
 ### Solution
-Simply add `torch.backends.cuda.matmul.allow_tf32 = True` to use TF32 for GEMM to avoid precision loss.
+Simply add `torch.backends.cuda.matmul.allow_tf32 = True` to use TF32 for GEMM to avoid precision loss, and in the mean time to utilize tensor core.
